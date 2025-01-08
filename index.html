@@ -1,0 +1,2581 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقويم السنوي</title>
+
+
+
+
+
+
+    
+    <style>
+
+.special-day {
+    background-color: #8A2BE2; /* لون الأيام المميزة */
+    color: white;
+}
+
+.private-salary-day {
+    background-color: #00CED1; /* لون رواتب القطاع الخاص */
+    color: white;
+}
+
+.salary-day {
+    background-color: #FF6347; /* لون رواتب القطاع الحكومي */
+    color: white;
+}
+
+.citizen-day {
+    background-color: #7CFC00; /* لون حساب المواطن */
+    color: white;
+}
+
+.today {
+    background-color: #4CAF50; /* لون اليوم الحالي */
+    color: white;
+}
+
+.weekend {
+    background-color: #FFD700; /* لون عطلة نهاية الأسبوع */
+}
+
+
+
+
+
+
+
+
+
+        .day {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+        }
+    
+        .day.today {
+            background-color: #4CAF50;
+            color: white;
+        }
+    
+        .day.weekend {
+            background-color: #FFD700;
+        }
+    
+        .day.salary-day {
+            background-color: #FF6347;
+            color: white;
+        }
+    
+        .day.citizen-day {
+            background-color: #7CFC00;
+            color: white;
+        }
+    
+        .day.private-salary-day {
+            background-color: #00CED1;
+            color: white;
+        }
+    
+        .day.social-security-day {
+            background-color: #FFA500;
+            color: white;
+        }
+    
+        .day.special-day {
+            background-color: #8A2BE2;
+            color: white;
+        }
+    
+        .day.national-day {
+            background-color: #FFD700;
+            color: black;
+            font-weight: bold;
+        }
+    
+        .day:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+    
+        .day-tooltip {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            display: none;
+        }
+    
+        .day:hover .day-tooltip {
+            display: block;
+        }
+    </style>
+    
+
+    <style>
+        /* تصميم عام */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+
+        .print-header {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .controls-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .legend-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .weekend-color {
+            background-color: #FFD700; /* لون نهاية الأسبوع */
+        }
+
+        .salary-day-color {
+            background-color: #FF6347; /* لون يوم الراتب */
+        }
+
+        .private-salary-color {
+            background-color: #00CED1; /* لون رواتب القطاع الخاص */
+        }
+
+        .citizen-day-color {
+            background-color: #7CFC00; /* لون حساب المواطن */
+        }
+
+        .special-day-color {
+            background-color: #8A2BE2; /* لون الأيام المميزة */
+        }
+
+        .today-color {
+            background-color: #4CAF50; /* لون اليوم الحالي */
+        }
+
+        .print-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px;
+        }
+
+        .month {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .month h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .week-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .week-day {
+            padding: 5px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .day.today {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .day.weekend {
+            background-color: #FFD700;
+        }
+
+        .day.salary-day {
+            background-color: #FF6347;
+            color: white;
+        }
+
+        .day.private-salary-day {
+            background-color: #00CED1;
+            color: white;
+        }
+
+        .day.citizen-day {
+            background-color: #7CFC00;
+            color: white;
+        }
+
+        .day.special-day {
+            background-color: #8A2BE2;
+            color: white;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: gray;
+        }
+        .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #4CAF50, #81C784);
+        color: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-logo img {
+        max-width: 80px;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-title h1 {
+        font-size: 24px;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .header-title p {
+        margin: 5px 0 0;
+        font-size: 14px;
+        font-style: italic;
+    }
+
+    @media print {
+        .header-container {
+            border-radius: 0;
+        }
+    }
+        /* تصميم الرأس */
+        .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+        background: linear-gradient(135deg, #00695C, #26A69A);
+        color: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        height: 200px; /* ارتفاع الرأس */
+    }
+
+    .header-title {
+        text-align: center;
+        font-family: 'Cairo', sans-serif; /* خط مميز */
+    }
+
+    .header-title h1 {
+        font-size: 36px;
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 2px; /* تباعد الحروف */
+        text-transform: uppercase; /* الحروف الكبيرة */
+    }
+
+    .header-title p {
+        margin: 10px 0 0;
+        font-size: 18px;
+        font-style: italic;
+        opacity: 0.9;
+    }
+
+    /* دعم الطباعة */
+    @media print {
+        .header-container {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(135deg, #3F51B5, #2196F3); /* درجات الأزرق */
+    border-bottom: 5px solid #FFEB3B; /* خط فاصل */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 20px 20px;
+    color: white;
+    text-align: center;
+}
+
+.header-logo img {
+    max-width: 120px;
+    border-radius: 15%;
+    border: 2px solid white;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s;
+}
+
+.header-logo img:hover {
+    transform: scale(1.1); /* تأثير التكبير */
+}
+
+.header-title h1 {
+    font-size: 42px;
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.header-title p {
+    margin-top: 10px;
+    font-size: 18px;
+    font-style: italic;
+    color: #FFEB3B; /* لون النص الثانوي */
+    opacity: 0.9;
+}
+/* تصميم رأس الصفحة */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(135deg, #004d40, #1de9b6);
+    color: white;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* الشعار */
+.header-logo img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(45deg, #1de9b6, #004d40);
+    padding: 10px;
+    border: 2px solid #fff;
+}
+
+.header-logo img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* النصوص الرئيسية */
+.header-title {
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 20px;
+    font-family: 'Cairo', sans-serif;
+}
+
+.header-title h1 {
+    font-size: 36px;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.header-title h2 {
+    font-size: 24px;
+    margin: 10px 0;
+    font-weight: normal;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    color: #e0f7fa;
+}
+
+.header-title p {
+    font-size: 18px;
+    font-style: italic;
+    color: #b2dfdb;
+    margin: 10px 0 0;
+}
+
+/* التأثيرات */
+@keyframes logoGlow {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+.header-logo img {
+    animation: logoGlow 3s infinite;
+}
+/* تصميم رأس الصفحة */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(135deg, #004d40, #1de9b6);
+    color: white;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* الشعار */
+.header-logo {
+    flex: 0 0 auto;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.header-logo img {
+    width: 120px; /* حجم الشعار يعادل ارتفاع النصوص */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #1de9b6, #004d40);
+    padding: 10px;
+    border: 3px solid #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-logo img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* النصوص الرئيسية */
+.header-title {
+    text-align: center;
+    flex-grow: 1;
+    font-family: 'Cairo', sans-serif;
+}
+
+.header-title h1 {
+    font-size: 36px;
+    margin: 0;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.header-title h2 {
+    font-size: 24px;
+    margin: 10px 0;
+    font-weight: normal;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    color: #e0f7fa;
+}
+
+.header-title p {
+    font-size: 18px;
+    font-style: italic;
+    color: #b2dfdb;
+    margin: 10px 0 0;
+}
+
+/* التأثيرات */
+@keyframes logoGlow {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+.header-logo img {
+    animation: logoGlow 3s infinite;
+}
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #00695C, #26A69A);
+    padding: 20px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.header-logo img {
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+.header-title {
+    text-align: center;
+    color: white;
+    font-family: 'Cairo', sans-serif;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #00695C, #26A69A);
+    color: white;
+    padding: 20px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.header-title h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 0;
+}
+.header-title h2 {
+    font-size: 24px;
+    margin: 5px 0;
+}
+.header-title p {
+    font-size: 18px;
+    font-style: italic;
+    margin: 5px 0;
+}
+
+    }
+
+    </style>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Cairo', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .header-container {
+        display: flex;
+        justify-content: space-between; /* الشعار في أقصى اليمين */
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #00695C, #26A69A);
+        border-radius: 0 0 15px 15px;
+    }
+
+    .header-logo {
+        background: rgba(255, 255, 255, 0.2); /* تأثير الزجاج */
+        border-radius: 15px; /* الشكل مربع */
+        padding: 20px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px; /* ارتفاع المربع */
+        width: 150px; /* عرض المربع */
+        position: relative;
+        overflow: hidden; /* لإخفاء العناصر الزائدة */
+        animation: glowEffect 3s infinite; /* تأثير لمعان كل 3 ثوان */
+    }
+
+    .header-logo img {
+        max-width: 100%; /* الشعار يظهر بالكامل */
+        max-height: 100%; /* الشعار يظهر بالكامل */
+        object-fit: contain; /* ضبط الحجم داخل المربع */
+    }
+
+    /* تأثير الخلفية اللامعة */
+    @keyframes glowEffect {
+        0%, 100% {
+            background: rgba(255, 255, 255, 0.2); /* عودة للخلفية الأصلية */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        50% {
+            background: #ffffff; /* الخلفية البيضاء المؤقتة */
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.7), inset 0 0 30px rgba(255, 255, 255, 0.9);
+        }
+    }
+
+    .header-title {
+        text-align: center;
+        color: white;
+        margin-right: auto; /* دفع النص إلى اليسار ليظهر بجانب الشعار */
+    }
+
+    .header-title h1 {
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-title h2 {
+        font-size: 24px;
+        margin: 10px 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .header-title p {
+        font-size: 18px;
+        margin: 5px 0 0;
+        opacity: 0.9;
+    }
+</style>
+<style>
+    /* تصميم الرأس */
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background: linear-gradient(135deg, #00695C, #26A69A);
+        color: white;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* الشعار */
+    .header-logo {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .logo-container {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #FFFFFF, #F0F0F0); /* خلفية بيضاء لامعة */
+        border-radius: 15px; /* زوايا مربعة مستديرة */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* ظل خارجي */
+        animation: shimmer 3s infinite; /* لمعان متحرك */
+    }
+    
+    .logo-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 10px; /* زوايا صغيرة للشعار */
+    }
+    
+    /* النصوص */
+    .header-title {
+        flex: 2;
+        text-align: center;
+        font-family: 'Cairo', sans-serif;
+    }
+    
+    .header-title h1 {
+        font-size: 28px;
+        margin: 0;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    
+    .header-title p {
+        margin: 5px 0;
+        font-size: 16px;
+        font-style: italic;
+        opacity: 0.9;
+    }
+    
+    /* تأثير اللمعان */
+    @keyframes shimmer {
+        0% {
+            background: linear-gradient(135deg, #FFFFFF, #F0F0F0);
+        }
+        50% {
+            background: linear-gradient(135deg, #F7F7F7, #FFFFFF);
+        }
+        100% {
+            background: linear-gradient(135deg, #FFFFFF, #F0F0F0);
+        }
+    }
+    
+    /* الطباعة */
+    @media print {
+        .header-container {
+            border-radius: 0;
+            box-shadow: none;
+        }
+    }
+    </style>
+     <style>
+        /* تصميم الرأس */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: linear-gradient(135deg, #00695C, #26A69A);
+            color: white;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* الشعار */
+        .header-logo {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .logo-container {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #FFFFFF, #F0F0F0); /* خلفية بيضاء لامعة */
+            border-radius: 15px; /* زوايا مربعة مستديرة */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* ظل خارجي */
+            animation: shimmer 3s infinite; /* لمعان متحرك */
+            position: relative;
+        }
+        
+        .logo-container img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            border-radius: 10px; /* زوايا صغيرة للشعار */
+        }
+        
+        /* النص داخل الإطار */
+        .logo-text {
+            position: absolute;
+            bottom: -30px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* النصوص */
+        .header-title {
+            flex: 2;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .header-title h1 {
+            font-size: 28px;
+            margin: 0;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .header-title p {
+            margin: 5px 0;
+            font-size: 16px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        /* تأثير اللمعان */
+        @keyframes shimmer {
+            0% {
+                background: linear-gradient(135deg, #FFFFFF, #F0F0F0);
+            }
+            50% {
+                background: linear-gradient(135deg, #F7F7F7, #FFFFFF);
+            }
+            100% {
+                background: linear-gradient(135deg, #FFFFFF, #F0F0F0);
+            }
+        }
+        
+        /* الطباعة */
+        @media print {
+            .header-container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+        </style>
+    
+    <style>
+        /* تصميم الرأس */
+        .header-container {
+            background: linear-gradient(135deg, #00695C, #004D40); /* خلفية تدريجية */
+            padding: 30px 20px;
+            color: white;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            gap: 20px;
+        }
+        
+        .header-logo {
+            flex: 0 0 auto;
+            width: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .logo-box {
+            background: white;
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .logo-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-box img {
+            width: 100%;
+            height: auto;
+            max-height: 120px;
+            object-fit: contain;
+        }
+        
+        .header-text {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .header-text .main-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0 0 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            color: #FFD700; /* لون ذهبي مميز */
+        }
+        
+        .header-text .sub-title {
+            font-size: 20px;
+            margin: 0 0 10px;
+            color: #81C784; /* لون فرعي */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-text .description {
+            font-size: 16px;
+            color: #FFFFFF;
+            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+        
+        /* دعم الطباعة */
+        @media print {
+            .header-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+        </style>
+
+<style>
+    /* تصميم الرأس */
+    .header-container {
+        background: linear-gradient(135deg, #00695C, #004D40); /* خلفية تدريجية */
+        padding: 30px 20px;
+        color: white;
+        text-align: center;
+        font-family: 'Cairo', sans-serif;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    
+    .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: 20px;
+    }
+    
+    .header-logo {
+        flex: 0 0 auto;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .logo-box {
+        background: white;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .logo-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo-box img {
+        width: 100%;
+        height: auto;
+        max-height: 120px;
+        object-fit: contain; /* إزالة الإطار الدائري */
+    }
+    
+    .header-text {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .header-text .main-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0 0 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        color: #FFD700; /* لون ذهبي مميز */
+    }
+    
+    .header-text .sub-title {
+        font-size: 20px;
+        margin: 0 0 10px;
+        color: #81C784; /* لون فرعي */
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header-text .description {
+        font-size: 16px;
+        color: #FFFFFF;
+        opacity: 0.9;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        margin: 0;
+    }
+    
+    /* دعم الطباعة */
+    @media print {
+        .header-container {
+            box-shadow: none;
+            border-radius: 0;
+        }
+    }
+    </style> 
+ <style>
+    /* تصميم الرأس */
+    .header-container {
+        background: linear-gradient(135deg, #00695C, #004D40); /* خلفية تدريجية */
+        padding: 30px 20px;
+        color: white;
+        text-align: center;
+        font-family: 'Cairo', sans-serif;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+    }
+    
+    .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: 20px;
+    }
+    
+    .header-logo {
+        flex: 0 0 auto;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .logo-box {
+        background: white;
+        border-radius: 15px; /* للإطار المربع */
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .logo-box:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo-box img {
+        width: 100%;
+        height: auto;
+        max-height: 120px;
+        object-fit: contain; /* تضمن عرض الصورة بالكامل */
+        border-radius: 0; /* إزالة أي حدود دائرية */
+    }
+    
+    .header-text {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .header-text .main-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0 0 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        color: #FFD700; /* لون ذهبي مميز */
+    }
+    
+    .header-text .sub-title {
+        font-size: 20px;
+        margin: 0 0 10px;
+        color: #81C784; /* لون فرعي */
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header-text .description {
+        font-size: 16px;
+        color: #FFFFFF;
+        opacity: 0.9;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        margin: 0;
+    }
+    
+    /* دعم الطباعة */
+    @media print {
+        .header-container {
+            box-shadow: none;
+            border-radius: 0;
+        }
+    }
+    </style>
+
+<style>
+    /* تصميم الرأس */
+    .header-container {
+        background: linear-gradient(135deg, #00695C, #004D40);
+        padding: 40px 20px;
+        color: white;
+        font-family: 'Cairo', sans-serif;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        position: relative;
+        text-align: center;
+    }
+    
+    .header-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
+        gap: 20px;
+    }
+    
+    .header-logo {
+        flex: 0 0 auto;
+        width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .logo-box {
+        background: white;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .logo-box img {
+        width: 100%;
+        height: auto;
+        max-height: 150px;
+        object-fit: contain;
+        border-radius: 0;
+    }
+    
+    .header-text {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .header-text .main-title {
+        font-family: 'Cairo', sans-serif;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 0 15px;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+        color: #FFD700;
+    }
+    
+    .header-text .sub-title {
+        font-family: 'Diwani', cursive;
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0 0 10px;
+        color: #81C784;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header-text .description {
+        font-family: 'Diwani', cursive;
+        font-size: 28px;
+        font-weight: bold;
+        color: #FFFFFF;
+        opacity: 0.9;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        margin: 0;
+    }
+    
+    /* دعم الطباعة */
+    @media print {
+        .header-container {
+            box-shadow: none;
+            border-radius: 0;
+        }
+    
+    }
+    </style>
+
+
+<style>
+    /* تصميم شريط الألوان */
+    .legend-container {
+        background: linear-gradient(135deg, #00695C, #004D40);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        color: white;
+        margin: 20px auto;
+        text-align: center;
+        max-width: 1200px;
+    }
+    
+    .legend-title {
+        font-family: 'Cairo', sans-serif;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #FFD700;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    }
+    
+    .legend-items {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .legend-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .legend-circle {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .weekend-color {
+        background-color: #FFD700; /* لون نهاية الأسبوع */
+    }
+    
+    .salary-day-color {
+        background-color: #FF6347; /* لون يوم الراتب */
+    }
+    
+    .private-salary-color {
+        background-color: #00CED1; /* لون رواتب القطاع الخاص */
+    }
+    
+    .citizen-day-color {
+        background-color: #7CFC00; /* لون حساب المواطن */
+    }
+    
+    .special-day-color {
+        background-color: #8A2BE2; /* لون الأيام المميزة */
+    }
+    
+    .today-color {
+        background-color: #4CAF50; /* لون اليوم الحالي */
+    }
+    
+    .legend-item span {
+        font-family: 'Cairo', sans-serif;
+        font-size: 16px;
+        color: white;
+        font-weight: bold;
+    }
+    
+    /* تصميم متجاوب */
+    @media (max-width: 768px) {
+        .legend-items {
+            flex-direction: column;
+        }
+    
+        .legend-item {
+            width: 100%;
+            justify-content: center;
+        }
+        .day {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.day.today {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.day.weekend {
+    background-color: #FFD700;
+}
+
+.day.salary-day {
+    background-color: #FF6347;
+    color: white;
+}
+
+.day.citizen-day {
+    background-color: #7CFC00;
+    color: white;
+}
+
+.day.special-day {
+    background-color: #8A2BE2;
+    color: white;
+}
+
+.day.national-day {
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+}
+.day.salary-day {
+    background-color: #FF6347; /* لون يوم الراتب */
+    color: white;
+}
+
+.day.citizen-day {
+    background-color: #7CFC00; /* لون حساب المواطن */
+    color: white;
+}
+
+.day.private-salary-day {
+    background-color: #00CED1; /* لون رواتب القطاع الخاص */
+    color: white;
+}
+
+.day.social-security-day {
+    background-color: #FFA500; /* لون الضمان الاجتماعي */
+    color: white;
+}
+
+
+    }
+    </style>
+
+
+</head>
+<body>
+
+
+
+  
+  
+
+    <header class="header-container">
+        <div class="header-content">
+            <!-- الشعار -->
+            <div class="header-logo">
+                <div class="logo-box">
+                    <img src="your-logo.png" alt="شعار الموقع">
+                </div>
+            </div>
+    
+            <!-- النصوص -->
+            <div class="header-text">
+                <h1 class="main-title">فريق النخبة الإعلامي التطوعي</h1>
+                <h2 class="sub-title">التقويم  السنوي ( 2025 )  </h2>                
+                <p class="description">دليلك الشامل للأحداث الوطنية والعالمية </p>
+            </div>
+        </div>
+    </header>
+    
+   
+    
+    
+   
+    
+    
+   
+    
+    
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <div class="legend-container">
+        <h2 class="legend-title">دليل الألوان</h2>
+        <div class="legend-items">
+            <div class="legend-item">
+                <div class="legend-circle weekend-color"></div>
+                <span>إجازة نهاية الأسبوع</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle salary-day-color"></div>
+                <span>يوم الراتب</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle private-salary-color"></div>
+                <span>رواتب القطاع الخاص</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle citizen-day-color"></div>
+                <span>حساب المواطن</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle special-day-color"></div>
+                <span>الأيام المميزة</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-circle today-color"></div>
+                <span>اليوم الحالي</span>
+            </div>
+        </div>
+    </div>
+    
+        <button class="print-button" onclick="window.print()">طباعة التقويم</button>
+    </div>
+
+    <div class="calendar-container" id="calendar-grid"></div>
+
+
+   
+        <script>
+    const calendarGrid = document.getElementById('calendar-grid');
+    const months = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+    ];
+
+    // تواريخ الأيام المميزة
+    const specialDays = [
+                
+// الأيام العالمية
+{ date: "2025-01-01", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام بين الشعوب." },
+{ date: "2025-01-04", title: "اليوم العالمي للبرايل", description: "يوم للاحتفال بلغة برايل للمكفوفين." },
+{ date: "2025-02-04", title: "اليوم العالمي للسرطان", description: "يوم للتوعية بأهمية مكافحة السرطان." },
+
+// الأيام الوطنية السعودية
+{ date: "2025-02-22", title: "يوم التأسيس السعودي", description: "يوم للاحتفال بتأسيس الدولة السعودية الأولى.", type: "national" },
+
+// الأيام العالمية
+{ date: "2025-03-08", title: "اليوم العالمي للمرأة", description: "يوم لتقدير إنجازات المرأة حول العالم." },
+{ date: "2025-03-11", title: "يوم العلم السعودي", description: "يوم للاحتفاء بالعلم السعودي كرمز للوحدة والسيادة الوطنية.", type: "national" },
+{ date: "2025-03-21", title: "اليوم العالمي للشعر", description: "يوم للاحتفال بإبداعات الشعراء." },
+{ date: "2025-03-22", title: "اليوم العالمي للمياه", description: "يوم للتوعية بأهمية الحفاظ على المياه." },
+
+// الأيام العالمية
+{ date: "2025-04-07", title: "اليوم العالمي للصحة", description: "يوم للتوعية بالصحة والوقاية من الأمراض." },
+{ date: "2025-04-22", title: "يوم الأرض", description: "يوم لتشجيع الحفاظ على البيئة." },
+{ date: "2025-05-03", title: "اليوم العالمي لحرية الصحافة", description: "يوم لدعم حرية الصحافة حول العالم." },
+{ date: "2025-05-15", title: "اليوم العالمي للأسرة", description: "يوم للاحتفال بدور الأسرة في المجتمع." },
+
+// الأيام العالمية
+{ date: "2025-06-05", title: "اليوم العالمي للبيئة", description: "يوم للتوعية بأهمية الحفاظ على البيئة." },
+{ date: "2025-06-14", title: "اليوم العالمي للمتبرعين بالدم", description: "يوم لتقدير المتبرعين بالدم." },
+{ date: "2025-07-11", title: "اليوم العالمي للسكان", description: "يوم للتوعية بقضايا السكان والتنمية." },
+{ date: "2025-07-30", title: "اليوم العالمي للصداقة", description: "يوم لتعزيز الصداقة بين الشعوب." },
+
+// الأيام العالمية
+{ date: "2025-08-12", title: "اليوم العالمي للشباب", description: "يوم لدعم دور الشباب في التنمية." },
+{ date: "2025-09-08", title: "اليوم العالمي لمحو الأمية", description: "يوم لتعزيز الجهود في مكافحة الأمية." },
+{ date: "2025-09-21", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام العالمي." },
+
+// اليوم الوطني السعودي
+{ date: "2025-09-23", title: "اليوم الوطني السعودي", description: "يوم للاحتفال بتوحيد المملكة العربية السعودية.", type: "national" },
+
+// الأيام العالمية
+{ date: "2025-10-01", title: "اليوم العالمي لكبار السن", description: "يوم لتقدير دور كبار السن." },
+{ date: "2025-10-10", title: "اليوم العالمي للصحة النفسية", description: "يوم للتوعية بالصحة النفسية." },
+{ date: "2025-10-15", title: "اليوم العالمي لغسل اليدين", description: "يوم لتوعية الأطفال والكبار بأهمية غسل اليدين." },
+{ date: "2025-10-18", title: "اليوم العالمي للقهوة", description: "يوم للاحتفال بمشروب القهوة ومشاركة عشاقها حول العالم." },
+
+// الأيام العالمية
+{ date: "2025-11-14", title: "اليوم العالمي للسكري", description: "يوم للتوعية بمخاطر مرض السكري." },
+{ date: "2025-11-20", title: "اليوم العالمي للطفل", description: "يوم للاحتفال بحقوق الأطفال في جميع أنحاء العالم." },
+
+// الأيام العالمية
+{ date: "2025-12-03", title: "اليوم العالمي لذوي الإعاقة", description: "يوم لدعم حقوق الأشخاص ذوي الإعاقة." },
+{ date: "2025-12-10", title: "اليوم العالمي لحقوق الإنسان", description: "يوم لتعزيز حقوق الإنسان حول العالم." },
+{ date: "2025-12-18", title: "اليوم العالمي للغة العربية", description: "يوم للاحتفال باللغة العربية وإبراز أهميتها." },
+
+// أيام دينية
+{ date: "2025-03-30", title: "بداية شهر رمضان", description: "اليوم الأول من شهر رمضان المبارك." },
+{ date: "2025-04-21", title: "عيد الفطر المبارك", description: "احتفال المسلمين بنهاية شهر رمضان." },
+{ date: "2025-06-28", title: "عيد الأضحى المبارك", description: "احتفال المسلمين بعيد الأضحى." }   ];
+
+    // تواريخ رواتب القطاع الخاص
+    const privateSalaryDates = [
+        "2025-01-01", "2025-02-01", "2025-03-01", "2025-04-01", "2025-05-01",
+        "2025-06-01", "2025-07-01", "2025-08-01", "2025-09-01", "2025-10-01",
+        "2025-11-01", "2025-12-01"
+    ];
+
+    // تواريخ رواتب القطاع الحكومي
+    const governmentSalaryDates = [
+        "2025-01-27", "2025-02-27", "2025-03-27", "2025-04-27", "2025-05-27",
+        "2025-06-27", "2025-07-27", "2025-08-27", "2025-09-27", "2025-10-27",
+        "2025-11-27", "2025-12-27"
+    ];
+
+    // تواريخ حساب المواطن
+    const citizenDates = [
+        "2025-01-10", "2025-02-10", "2025-03-10", "2025-04-10", "2025-05-10",
+        "2025-06-10", "2025-07-10", "2025-08-10", "2025-09-10", "2025-10-10",
+        "2025-11-10", "2025-12-10"
+    ];
+
+    function createCalendar() {
+        months.forEach((month, monthIndex) => {
+            const monthDiv = document.createElement('div');
+            monthDiv.classList.add('month');
+
+            const monthTitle = document.createElement('h2');
+            monthTitle.textContent = month;
+            monthDiv.appendChild(monthTitle);
+
+            const weekRow = document.createElement('div');
+            weekRow.classList.add('week-row');
+            ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"].forEach(day => {
+                const weekDayDiv = document.createElement('div');
+                weekDayDiv.classList.add('week-day');
+                weekDayDiv.textContent = day;
+                weekRow.appendChild(weekDayDiv);
+            });
+            monthDiv.appendChild(weekRow);
+
+            const daysGrid = document.createElement('div');
+            daysGrid.classList.add('days-grid');
+
+            const daysInMonth = new Date(2025, monthIndex + 1, 0).getDate();
+            const firstDay = new Date(2025, monthIndex, 1).getDay();
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                daysGrid.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('day');
+                dayDiv.textContent = day;
+
+                const currentDate = `2025-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                // تحقق من الأيام المميزة
+                const specialDay = specialDays.find(special => special.date === currentDate);
+                if (specialDay) {
+                    dayDiv.classList.add('special-day');
+                    dayDiv.title = `${specialDay.title}: ${specialDay.description}`;
+                }
+
+                // تحقق من رواتب القطاع الخاص
+                if (privateSalaryDates.includes(currentDate)) {
+                    dayDiv.classList.add('private-salary-day');
+                }
+
+                // تحقق من رواتب القطاع الحكومي
+                if (governmentSalaryDates.includes(currentDate)) {
+                    dayDiv.classList.add('salary-day');
+                }
+
+                // تحقق من حساب المواطن
+                if (citizenDates.includes(currentDate)) {
+                    dayDiv.classList.add('citizen-day');
+                }
+
+                // تحقق من اليوم الحالي
+                const today = new Date().toISOString().split('T')[0];
+                if (currentDate === today) {
+                    dayDiv.classList.add('today');
+                }
+
+                // تحقق من عطلة نهاية الأسبوع
+                const dayOfWeek = new Date(2025, monthIndex, day).getDay();
+                if (dayOfWeek === 5 || dayOfWeek === 6) {
+                    dayDiv.classList.add('weekend');
+                }
+
+                daysGrid.appendChild(dayDiv);
+            }
+
+            monthDiv.appendChild(daysGrid);
+            calendarGrid.appendChild(monthDiv);
+        });
+    }
+
+    createCalendar();
+</script>
+
+
+
+
+
+    
+
+<div class="events-container">
+    <h2>الفعاليات والأيام المميزة والإجازات</h2>
+    <input
+        type="text"
+        id="search-box"
+        placeholder="...ابحث عن فعالية"
+        onkeyup="searchEvents()"
+        style="width: 100%; padding: 10px; margin-bottom: 20px; font-size: 16px; border: 1px solid #ddd; border-radius: 8px;"
+    />
+    <table id="events-table">
+        <thead>
+            <tr>
+                <th>التاريخ</th>
+                <th>اليوم</th>
+                <th>الفعالية</th>
+                <th>الوصف</th>
+                <th>نسخ</th>
+                <th>الأيام المتبقية</th>
+            </tr>
+        </thead>
+        <tbody id="events-table-body"></tbody>
+    </table>
+</div>
+
+<style>
+.day {
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.day.today {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.day.weekend {
+    background-color: #FFD700;
+}
+
+.day.salary-day {
+    background-color: #FF6347;
+    color: white;
+}
+
+.day.citizen-day {
+    background-color: #7CFC00;
+    color: white;
+}
+
+.day.special-day {
+    background-color: #8A2BE2;
+    color: white;
+}
+
+.day.national-day {
+    background-color: #FFD700;
+    color: black;
+    font-weight: bold;
+}
+
+
+    .events-container {
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #ffffff, #f9f9f9);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+    }
+
+    .events-container h2 {
+        font-family: 'Cairo', sans-serif;
+        font-size: 32px;
+        color: #4CAF50;
+        text-align: center;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    table#events-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Cairo', sans-serif;
+        font-size: 20px;
+    }
+
+    table#events-table thead th {
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-weight: bold;
+        border-bottom: 4px solid #388E3C;
+    }
+
+    table#events-table tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    table#events-table tbody tr.saudi-event {
+        background: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    table#events-table tbody tr.saudi-event td {
+        font-weight: bold;
+    }
+
+    table#events-table tbody tr:hover {
+        background: #f1f1f1;
+    }
+
+    table#events-table tbody td {
+        padding: 15px;
+        text-align: center;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        word-wrap: break-word;
+        font-size: 18px;
+    }
+
+    table#events-table tbody td:first-child {
+        font-weight: bold;
+        color: #388E3C;
+    }
+
+    table#events-table tbody td:nth-child(3),
+    table#events-table tbody td:nth-child(4) {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 1.6;
+    }
+
+    table#events-table tbody td:nth-child(2) {
+        color: #FF5722;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    table#events-table tbody td:last-child button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    table#events-table tbody td:last-child button:hover {
+        background: #45A049;
+    }
+
+    table#events-table tbody td.negative {
+        color: red;
+    }
+
+    table#events-table tbody td.positive {
+        color: green;
+    }
+
+    table#events-table tbody td.saudi-button button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .saudi-icon {
+        margin-left: 5px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .highlight {
+        background-color: #e0f7fa;
+        border: 2px solid #00796b;
+    }
+</style>
+
+
+<button onclick="renderEventsTable()">إعادة تحميل الجدول</button>
+ 
+<script>
+   if (!window.specialDays) {
+    window.specialDays = [
+        // الأيام السعودية
+        { date: "2025-01-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-01-01", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام بين الشعوب." },
+    { date: "2025-01-03", title: "إجازة منتصف العام الدراسي", description: "إجازة منتصف العام الدراسي", type: "education" },
+    { date: "2025-01-04", title: "اليوم العالمي للبرايل", description: "يوم للاحتفال بلغة برايل للمكفوفين." },
+    { date: "2025-01-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-01-12", title: "بداية الدراسة بعد إجازة منتصف العام الدراسي", description: "بداية الفصل الثاني", type: "education" },
+    { date: "2025-01-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-01-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // فبراير
+    { date: "2025-02-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-02-02", title: "اليوم العالمي للأراضي الرطبة", description: "يوم للتوعية بأهمية الأراضي الرطبة في الحفاظ على البيئة." },
+    { date: "2025-02-04", title: "اليوم العالمي للسرطان", description: "يوم للتوعية بأهمية مكافحة السرطان." },
+    { date: "2025-02-06", title: "اليوم العالمي لعدم التسامح مع ختان الإناث", description: "يوم لتعزيز حقوق الفتيات ومكافحة ختان الإناث." },
+    { date: "2025-02-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-02-11", title: "اليوم العالمي للمرأة والفتاة في العلوم", description: "يوم لدعم مشاركة النساء والفتيات في العلوم." },
+    { date: "2025-02-13", title: "اليوم العالمي للإذاعة", description: "يوم للاحتفال بدور الإذاعة في الإعلام." },
+    { date: "2025-02-20", title: "نهاية الفصل الدراسي الثاني", description: "نهاية الفصل الثاني", type: "education" },
+    { date: "2025-02-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-02-21", title: "اليوم العالمي للغة الأم", description: "يوم للاحتفاء بالتنوع اللغوي والثقافي." },
+    { date: "2025-02-22", title: "يوم التأسيس السعودي", description: "يوم للاحتفال بتأسيس الدولة السعودية الأولى.", type: "national" },
+    { date: "2025-02-23", title: "إجازة يوم التأسيس", description: "إجازة يوم التأسيس", type: "education" },
+    { date: "2025-02-24", title: "إجازة الشتاء", description: "إجازة الشتاء", type: "education" },
+    { date: "2025-02-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // مارس
+    { date: "2025-03-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-03-02", title: "بداية الدراسة للفصل الدراسي الثالث", description: "بداية الفصل الثالث", type: "education" },
+    { date: "2025-03-03", title: "اليوم العالمي للحياة البرية", description: "يوم للتوعية بأهمية الحفاظ على الحياة البرية." },
+    { date: "2025-03-08", title: "اليوم العالمي للمرأة", description: "يوم لتقدير إنجازات المرأة حول العالم." },
+    { date: "2025-03-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-03-11", title: "يوم العلم السعودي", description: "يوم للاحتفاء بالعلم السعودي كرمز للوحدة والسيادة الوطنية.", type: "national" },
+    { date: "2025-03-20", title: "إجازة عيد الفطر", description: "إجازة عيد الفطر", type: "education" },
+    { date: "2025-03-20", title: "اليوم العالمي للسعادة", description: "يوم لتعزيز السعادة والرفاهية." },
+    { date: "2025-03-21", title: "اليوم العالمي للشعر", description: "يوم للاحتفال بإبداعات الشعراء." },
+    { date: "2025-03-21", title: "اليوم العالمي لمتلازمة داون", description: "يوم للتوعية بمتلازمة داون ودعم المصابين بها." },
+    { date: "2025-03-22", title: "اليوم العالمي للمياه", description: "يوم للتوعية بأهمية الحفاظ على المياه." },
+    { date: "2025-03-23", title: "اليوم العالمي للأرصاد الجوية", description: "يوم لتعزيز المعرفة بأهمية الأرصاد الجوية." },
+    { date: "2025-03-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // أبريل
+    { date: "2025-04-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-04-02", title: "اليوم العالمي للتوعية بالتوحد", description: "يوم لزيادة الوعي بالتوحد ودعم المصابين به." },
+    { date: "2025-04-06", title: "بداية الدراسة بعد إجازة عيد الفطر", description: "عودة الدراسة بعد العيد", type: "education" },
+    { date: "2025-04-07", title: "اليوم العالمي للصحة", description: "يوم للتوعية بالصحة والوقاية من الأمراض." },
+    { date: "2025-04-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-04-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-04-22", title: "يوم الأرض", description: "يوم لتشجيع الحفاظ على البيئة." },
+    { date: "2025-04-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // مايو
+    { date: "2025-05-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-05-01", title: "اليوم العالمي للعمال", description: "يوم لتكريم جهود العمال حول العالم." },
+    { date: "2025-05-03", title: "اليوم العالمي لحرية الصحافة", description: "يوم لدعم حرية الصحافة حول العالم." },
+    { date: "2025-05-04", title: "إجازة نهاية أسبوع مطولة", description: "إجازة نهاية أسبوع مطولة", type: "education" },
+    { date: "2025-05-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-05-15", title: "اليوم العالمي للأسرة", description: "يوم للاحتفال بدور الأسرة في المجتمع." },
+    { date: "2025-05-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-05-30", title: "إجازة عيد الأضحى", description: "إجازة عيد الأضحى", type: "education" },
+
+    // يونيو
+    { date: "2025-06-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-06-05", title: "اليوم العالمي للبيئة", description: "يوم للتوعية بأهمية الحفاظ على البيئة." },
+    { date: "2025-06-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-06-14", title: "اليوم العالمي للمتبرعين بالدم", description: "يوم لتقدير المتبرعين بالدم." },
+    { date: "2025-06-15", title: "بداية الدراسة بعد إجازة عيد الأضحى", description: "عودة الدراسة بعد العيد", type: "education" },
+    { date: "2025-06-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-06-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // يوليو
+    { date: "2025-07-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-07-11", title: "اليوم العالمي للسكان", description: "يوم للتوعية بقضايا السكان والتنمية." },
+    { date: "2025-07-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-07-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-07-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+    { date: "2025-07-30", title: "اليوم العالمي للصداقة", description: "يوم لتعزيز الصداقة بين الشعوب." },
+
+    // أغسطس
+    { date: "2025-08-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-08-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-08-12", title: "اليوم العالمي للشباب", description: "يوم لدعم دور الشباب في التنمية." },
+    { date: "2025-08-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-08-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // سبتمبر
+    { date: "2025-09-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-09-08", title: "اليوم العالمي لمحو الأمية", description: "يوم لتعزيز الجهود في مكافحة الأمية." },
+    { date: "2025-09-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-09-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-09-21", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام العالمي." },
+    { date: "2025-09-23", title: "اليوم الوطني السعودي", description: "يوم للاحتفال بتوحيد المملكة العربية السعودية.", type: "national" },
+    { date: "2025-09-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // أكتوبر
+    { date: "2025-10-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-10-01", title: "اليوم العالمي لكبار السن", description: "يوم لتقدير دور كبار السن." },
+    { date: "2025-10-10", title: "اليوم العالمي للصحة النفسية", description: "يوم للتوعية بالصحة النفسية." },
+    { date: "2025-10-15", title: "اليوم العالمي لغسل اليدين", description: "يوم لتوعية الأطفال والكبار بأهمية غسل اليدين." },
+    { date: "2025-10-18", title: "اليوم العالمي للقهوة", description: "يوم للاحتفال بمشروب القهوة ومشاركة عشاقها حول العالم." },
+    { date: "2025-10-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-10-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-10-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // نوفمبر
+    { date: "2025-11-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-11-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-11-14", title: "اليوم العالمي للسكري", description: "يوم للتوعية بمخاطر مرض السكري." },
+    { date: "2025-11-20", title: "اليوم العالمي للطفل", description: "يوم للاحتفال بحقوق الأطفال في جميع أنحاء العالم." },
+    { date: "2025-11-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-11-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // ديسمبر
+    { date: "2025-12-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-12-03", title: "اليوم العالمي لذوي الإعاقة", description: "يوم لدعم حقوق الأشخاص ذوي الإعاقة." },
+    { date: "2025-12-10", title: "اليوم العالمي لحقوق الإنسان", description: "يوم لتعزيز حقوق الإنسان حول العالم." },
+    { date: "2025-12-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-12-18", title: "اليوم العالمي للغة العربية", description: "يوم للاحتفال باللغة العربية وإبراز أهميتها." },
+    { date: "2025-12-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-12-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" }
+    ];
+}
+
+    const eventsTableBody = document.getElementById('events-table-body');
+
+    function getDayName(dateString) {
+        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        const date = new Date(dateString);
+        return days[date.getDay()];
+    }
+
+    function getDaysRemaining(dateString) {
+        const today = new Date();
+        const eventDate = new Date(dateString);
+        return Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+    }
+
+    function renderEventsTable() {
+        let nearestEventRow = null;
+        let nearestEventDiff = Infinity;
+
+        window.specialDays.forEach(event => {
+            if (!event.date || !event.title || !event.description) return;
+
+            const daysRemaining = getDaysRemaining(event.date);
+            const isSaudiEvent = event.title.includes("السعودي") || event.title.includes("تأسيس");
+
+            const row = document.createElement("tr");
+            row.classList.add(isSaudiEvent ? "saudi-event" : "");
+
+            row.innerHTML = `
+                <td>${event.date}</td>
+                <td>${getDayName(event.date)}</td>
+                <td>${event.title}</td>
+                <td>${event.description}</td>
+                <td>
+                    <button onclick="copyToClipboard('${event.title}: ${event.description}')">
+                        نسخ
+                        ${isSaudiEvent ? '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Saudi_Arabia.svg/16px-Flag_of_Saudi_Arabia.svg.png" alt="Saudi Icon" class="saudi-icon" />' : ""}
+                    </button>
+                </td>
+                <td class="${daysRemaining < 0 ? "negative" : "positive"}">${daysRemaining} يوم</td>
+            `;
+
+            if (daysRemaining >= 0 && daysRemaining < nearestEventDiff) {
+                nearestEventDiff = daysRemaining;
+                nearestEventRow = row;
+            }
+
+            eventsTableBody.appendChild(row);
+        });
+
+        if (nearestEventRow) {
+            nearestEventRow.classList.add("highlight");
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("تم النسخ بنجاح: " + text);
+        });
+    }
+
+    function searchEvents() {
+        const filter = document.getElementById("search-box").value.toLowerCase();
+        const rows = document.querySelectorAll("#events-table tbody tr");
+        rows.forEach(row => {
+            const title = row.cells[2].innerText.toLowerCase();
+            const description = row.cells[3].innerText.toLowerCase();
+            if (title.includes(filter) || description.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    renderEventsTable();
+</script>
+
+
+<style>
+    .events-container {
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #ffffff, #f9f9f9);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+    }
+
+    .events-container h2 {
+        font-family: 'Cairo', sans-serif;
+        font-size: 32px;
+        color: #4CAF50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table#events-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Cairo', sans-serif;
+        font-size: 18px;
+    }
+
+    table#events-table thead th {
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-weight: bold;
+        border-bottom: 4px solid #388E3C;
+    }
+
+    table#events-table tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    table#events-table tbody tr.saudi-event {
+        background: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    table#events-table tbody tr.saudi-event td {
+        font-weight: bold;
+    }
+
+    table#events-table tbody tr.highlight {
+        background: #FFF8E1;
+        border: 2px solid #FFC107;
+    }
+
+    table#events-table tbody td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        word-wrap: break-word;
+    }
+
+    table#events-table tbody td.negative {
+        color: red;
+    }
+
+    table#events-table tbody td.positive {
+        color: green;
+    }
+
+    table#events-table tbody td:last-child button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    table#events-table tbody td:last-child button:hover {
+        background: #45A049;
+    }
+
+    .saudi-icon {
+        margin-left: 5px;
+        width: 16px;
+        height: 16px;
+    }
+</style>
+
+
+<script>
+    if (!window.specialDays) {
+        window.specialDays = [
+        // يناير
+        { date: "2025-01-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-01-01", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام بين الشعوب." },
+    { date: "2025-01-03", title: "إجازة منتصف العام الدراسي", description: "إجازة منتصف العام الدراسي", type: "education" },
+    { date: "2025-01-04", title: "اليوم العالمي للبرايل", description: "يوم للاحتفال بلغة برايل للمكفوفين." },
+    { date: "2025-01-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-01-12", title: "بداية الدراسة بعد إجازة منتصف العام الدراسي", description: "بداية الفصل الثاني", type: "education" },
+    { date: "2025-01-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-01-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // فبراير
+    { date: "2025-02-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-02-02", title: "اليوم العالمي للأراضي الرطبة", description: "يوم للتوعية بأهمية الأراضي الرطبة في الحفاظ على البيئة." },
+    { date: "2025-02-04", title: "اليوم العالمي للسرطان", description: "يوم للتوعية بأهمية مكافحة السرطان." },
+    { date: "2025-02-06", title: "اليوم العالمي لعدم التسامح مع ختان الإناث", description: "يوم لتعزيز حقوق الفتيات ومكافحة ختان الإناث." },
+    { date: "2025-02-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-02-11", title: "اليوم العالمي للمرأة والفتاة في العلوم", description: "يوم لدعم مشاركة النساء والفتيات في العلوم." },
+    { date: "2025-02-13", title: "اليوم العالمي للإذاعة", description: "يوم للاحتفال بدور الإذاعة في الإعلام." },
+    { date: "2025-02-20", title: "نهاية الفصل الدراسي الثاني", description: "نهاية الفصل الثاني", type: "education" },
+    { date: "2025-02-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-02-21", title: "اليوم العالمي للغة الأم", description: "يوم للاحتفاء بالتنوع اللغوي والثقافي." },
+    { date: "2025-02-22", title: "يوم التأسيس السعودي", description: "يوم للاحتفال بتأسيس الدولة السعودية الأولى.", type: "national" },
+    { date: "2025-02-23", title: "إجازة يوم التأسيس", description: "إجازة يوم التأسيس", type: "education" },
+    { date: "2025-02-24", title: "إجازة الشتاء", description: "إجازة الشتاء", type: "education" },
+    { date: "2025-02-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // مارس
+    { date: "2025-03-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-03-02", title: "بداية الدراسة للفصل الدراسي الثالث", description: "بداية الفصل الثالث", type: "education" },
+    { date: "2025-03-03", title: "اليوم العالمي للحياة البرية", description: "يوم للتوعية بأهمية الحفاظ على الحياة البرية." },
+    { date: "2025-03-08", title: "اليوم العالمي للمرأة", description: "يوم لتقدير إنجازات المرأة حول العالم." },
+    { date: "2025-03-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-03-11", title: "يوم العلم السعودي", description: "يوم للاحتفاء بالعلم السعودي كرمز للوحدة والسيادة الوطنية.", type: "national" },
+    { date: "2025-03-20", title: "إجازة عيد الفطر", description: "إجازة عيد الفطر", type: "education" },
+    { date: "2025-03-20", title: "اليوم العالمي للسعادة", description: "يوم لتعزيز السعادة والرفاهية." },
+    { date: "2025-03-21", title: "اليوم العالمي للشعر", description: "يوم للاحتفال بإبداعات الشعراء." },
+    { date: "2025-03-21", title: "اليوم العالمي لمتلازمة داون", description: "يوم للتوعية بمتلازمة داون ودعم المصابين بها." },
+    { date: "2025-03-22", title: "اليوم العالمي للمياه", description: "يوم للتوعية بأهمية الحفاظ على المياه." },
+    { date: "2025-03-23", title: "اليوم العالمي للأرصاد الجوية", description: "يوم لتعزيز المعرفة بأهمية الأرصاد الجوية." },
+    { date: "2025-03-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // أبريل
+    { date: "2025-04-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-04-02", title: "اليوم العالمي للتوعية بالتوحد", description: "يوم لزيادة الوعي بالتوحد ودعم المصابين به." },
+    { date: "2025-04-06", title: "بداية الدراسة بعد إجازة عيد الفطر", description: "عودة الدراسة بعد العيد", type: "education" },
+    { date: "2025-04-07", title: "اليوم العالمي للصحة", description: "يوم للتوعية بالصحة والوقاية من الأمراض." },
+    { date: "2025-04-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-04-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-04-22", title: "يوم الأرض", description: "يوم لتشجيع الحفاظ على البيئة." },
+    { date: "2025-04-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // مايو
+    { date: "2025-05-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-05-01", title: "اليوم العالمي للعمال", description: "يوم لتكريم جهود العمال حول العالم." },
+    { date: "2025-05-03", title: "اليوم العالمي لحرية الصحافة", description: "يوم لدعم حرية الصحافة حول العالم." },
+    { date: "2025-05-04", title: "إجازة نهاية أسبوع مطولة", description: "إجازة نهاية أسبوع مطولة", type: "education" },
+    { date: "2025-05-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-05-15", title: "اليوم العالمي للأسرة", description: "يوم للاحتفال بدور الأسرة في المجتمع." },
+    { date: "2025-05-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-05-30", title: "إجازة عيد الأضحى", description: "إجازة عيد الأضحى", type: "education" },
+
+    // يونيو
+    { date: "2025-06-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-06-05", title: "اليوم العالمي للبيئة", description: "يوم للتوعية بأهمية الحفاظ على البيئة." },
+    { date: "2025-06-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-06-14", title: "اليوم العالمي للمتبرعين بالدم", description: "يوم لتقدير المتبرعين بالدم." },
+    { date: "2025-06-15", title: "بداية الدراسة بعد إجازة عيد الأضحى", description: "عودة الدراسة بعد العيد", type: "education" },
+    { date: "2025-06-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-06-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // يوليو
+    { date: "2025-07-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-07-11", title: "اليوم العالمي للسكان", description: "يوم للتوعية بقضايا السكان والتنمية." },
+    { date: "2025-07-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-07-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-07-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+    { date: "2025-07-30", title: "اليوم العالمي للصداقة", description: "يوم لتعزيز الصداقة بين الشعوب." },
+
+    // أغسطس
+    { date: "2025-08-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-08-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-08-12", title: "اليوم العالمي للشباب", description: "يوم لدعم دور الشباب في التنمية." },
+    { date: "2025-08-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-08-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // سبتمبر
+    { date: "2025-09-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-09-08", title: "اليوم العالمي لمحو الأمية", description: "يوم لتعزيز الجهود في مكافحة الأمية." },
+    { date: "2025-09-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-09-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-09-21", title: "اليوم العالمي للسلام", description: "يوم لتعزيز السلام العالمي." },
+    { date: "2025-09-23", title: "اليوم الوطني السعودي", description: "يوم للاحتفال بتوحيد المملكة العربية السعودية.", type: "national" },
+    { date: "2025-09-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // أكتوبر
+    { date: "2025-10-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-10-01", title: "اليوم العالمي لكبار السن", description: "يوم لتقدير دور كبار السن." },
+    { date: "2025-10-10", title: "اليوم العالمي للصحة النفسية", description: "يوم للتوعية بالصحة النفسية." },
+    { date: "2025-10-15", title: "اليوم العالمي لغسل اليدين", description: "يوم لتوعية الأطفال والكبار بأهمية غسل اليدين." },
+    { date: "2025-10-18", title: "اليوم العالمي للقهوة", description: "يوم للاحتفال بمشروب القهوة ومشاركة عشاقها حول العالم." },
+    { date: "2025-10-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-10-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-10-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // نوفمبر
+    { date: "2025-11-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-11-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-11-14", title: "اليوم العالمي للسكري", description: "يوم للتوعية بمخاطر مرض السكري." },
+    { date: "2025-11-20", title: "اليوم العالمي للطفل", description: "يوم للاحتفال بحقوق الأطفال في جميع أنحاء العالم." },
+    { date: "2025-11-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-11-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" },
+
+    // ديسمبر
+    { date: "2025-12-01", title: "رواتب القطاع الخاص", description: "صرف رواتب القطاع الخاص", type: "finance" },
+    { date: "2025-12-03", title: "اليوم العالمي لذوي الإعاقة", description: "يوم لدعم حقوق الأشخاص ذوي الإعاقة." },
+    { date: "2025-12-10", title: "اليوم العالمي لحقوق الإنسان", description: "يوم لتعزيز حقوق الإنسان حول العالم." },
+    { date: "2025-12-10", title: "حساب المواطن", description: "دفع حساب المواطن", type: "finance" },
+    { date: "2025-12-18", title: "اليوم العالمي للغة العربية", description: "يوم للاحتفال باللغة العربية وإبراز أهميتها." },
+    { date: "2025-12-20", title: "الضمان الاجتماعي", description: "دفع معاشات الضمان الاجتماعي", type: "finance" },
+    { date: "2025-12-27", title: "رواتب الموظفين الحكوميين", description: "صرف رواتب الحكومة", type: "finance" }
+        ];
+    }
+
+    function getDayName(dateString) {
+        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        const date = new Date(dateString);
+        return days[date.getDay()];
+    }
+
+    function getDaysRemaining(dateString) {
+        const today = new Date();
+        const eventDate = new Date(dateString);
+        return Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+    }
+
+    function renderEventsTable() {
+        const tableBody = document.getElementById("events-table-body");
+        tableBody.innerHTML = "";
+
+        specialDays.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        specialDays.forEach(event => {
+            const daysRemaining = getDaysRemaining(event.date);
+            const isSaudiEvent = event.type === "national";
+
+            const row = document.createElement("tr");
+            if (isSaudiEvent) row.classList.add("saudi-event");
+
+            row.innerHTML = `
+                <td>${event.date}</td>
+                <td>${getDayName(event.date)}</td>
+                <td>${event.title}</td>
+                <td>${event.description}</td>
+                <td>
+                    <button onclick="copyToClipboard('${event.title}: ${event.description}')">
+                        نسخ
+                        ${isSaudiEvent ? '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Saudi_Arabia.svg/16px-Flag_of_Saudi_Arabia.svg.png" alt="Saudi Icon" class="saudi-icon" />' : ""}
+                    </button>
+                </td>
+                <td class="${daysRemaining < 0 ? "negative" : "positive"}">${daysRemaining} يوم</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("تم النسخ بنجاح: " + text);
+        });
+    }
+
+    function searchEvents() {
+        const filter = document.getElementById("search-box").value.toLowerCase();
+        const rows = document.querySelectorAll("#events-table tbody tr");
+        rows.forEach(row => {
+            const title = row.cells[2].innerText.toLowerCase();
+            const description = row.cells[3].innerText.toLowerCase();
+            if (title.includes(filter) || description.includes(filter)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    renderEventsTable();
+</script>
+
+
+
+
+</body>
+<footer class="footer">
+    <div class="footer-container">
+        <!-- قسم التواصل -->
+        <div class="footer-section">
+            <h3>تواصل معنا</h3>
+            <ul>
+                <li>حساب الفريق على منصة X: <a href="https://x.com/alttw37469" target="_blank">@alttw37469</a></li>
+                <li>البريد الإلكتروني: <a href="mailto:elite.media.team.madina@gmail.com">elite.media.team.madina@gmail.com</a></li>
+            </ul>
+        </div>
+
+     
+
+<!-- قسم إرسال التقويم -->
+<div class="footer-section">
+    <h3>إرسال التقويم</h3>
+    <p>قم بمشاركة هذا التقويم مع أصدقائك:</p>
+    <form class="send-calendar-form" id="sendCalendarForm">
+        <input type="email" id="emailInput" placeholder="أدخل البريد الإلكتروني" required>
+        <button type="submit">إرسال</button>
+    </form>
+    <p id="successMessage" style="color: green; display: none;">تم إرسال التقويم بنجاح!</p>
+</div>
+
+<script>
+    // تفعيل نموذج إرسال التقويم
+    document.getElementById("sendCalendarForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // منع إعادة تحميل الصفحة
+
+        const emailInput = document.getElementById("emailInput").value;
+        const successMessage = document.getElementById("successMessage");
+
+        // تحقق من صحة البريد الإلكتروني
+        if (!validateEmail(emailInput)) {
+            alert("يرجى إدخال بريد إلكتروني صالح.");
+            return;
+        }
+
+        // محاكاة إرسال البريد الإلكتروني
+        setTimeout(() => {
+            successMessage.style.display = "block"; // عرض رسالة النجاح
+        }, 1000);
+
+        // إعادة تعيين النموذج
+        document.getElementById("sendCalendarForm").reset();
+    });
+
+    // وظيفة للتحقق من صحة البريد الإلكتروني
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+</script>
+
+
+<div class="footer-section">
+    <h3>عدد زوار الصفحة</h3>
+    <div class="visitor-counter">
+        <span id="visitorCount" class="counter">0</span>
+    </div>
+</div>
+
+<script>
+    // الحصول على القيمة الحالية للعداد من LocalStorage
+    let visitorCount = parseInt(localStorage.getItem('visitorCount')) || 0;
+
+    // زيادة العدد بمقدار 1
+    visitorCount += 1;
+
+    // تخزين القيمة الجديدة في LocalStorage
+    localStorage.setItem('visitorCount', visitorCount);
+
+    // عرض العدد على الصفحة
+    document.getElementById('visitorCount').textContent = visitorCount.toLocaleString();
+</script>
+
+
+
+
+    </div>
+
+    <!-- حقوق التصميم والبرمجة -->
+    <div class="footer-credits">
+        <p>تم تصميم وبرمجة هذا الموقع بواسطة <a href="https://x.com/Wa6680" target="_blank">WA</a></p>
+        <p>جميع الحقوق محفوظة لفريق النخبة الإعلامي التطوعي &copy; 2025</p>
+    </div>
+</footer>
+
+<style>
+/* تصميم التذييل */
+.footer {
+    background: linear-gradient(135deg, #00695C, #004D40); /* لون خلفية */
+    padding: 40px 20px;
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.footer-section {
+    flex: 1 1 300px;
+    margin: 10px;
+}
+
+.footer-section h3 {
+    color: #FFD700; /* لون مميز للعناوين */
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    color: #81C784;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #4CAF50; /* تغيير لون الرابط عند التمرير */
+}
+
+.send-calendar-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.send-calendar-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    flex: 1;
+    max-width: 300px;
+}
+
+.send-calendar-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.send-calendar-form button:hover {
+    background-color: #45A049;
+}
+
+/* تصميم قسم حقوق التصميم */
+.footer-credits {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+}
+
+.footer-credits a {
+    color: #FFD700;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.footer-credits a:hover {
+    color: #81C784;
+}
+
+.footer-credits p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+</style>
+<style>
+    /* الحاوية الرئيسية للعداد */
+    .visitor-counter-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        max-width: 400px;
+    }
+
+    /* مربع العداد */
+    .visitor-counter-box {
+        background: linear-gradient(135deg, #00695C, #004D40);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* عنوان العداد */
+    .visitor-counter-box h3 {
+        font-family: 'Cairo', sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #FFD700; /* لون ذهبي */
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    /* العدد */
+    .visitor-counter {
+        font-size: 36px;
+        font-weight: bold;
+        font-family: 'Cairo', sans-serif;
+        color: #FFFFFF;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: inline-block;
+    }
+
+    /* تأثير خلفية متحركة */
+    .visitor-counter-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+        transform: rotate(45deg);
+        z-index: 0;
+        animation: shine 5s infinite linear;
+    }
+
+    .visitor-counter-box h3, .visitor-counter {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* تأثير اللمعان */
+    @keyframes shine {
+        0% {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        100% {
+            transform: translate(50%, 50%) rotate(45deg);
+        }
+    }
+
+    /* تحسين الشكل على الهواتف */
+    @media (max-width: 768px) {
+        .visitor-counter-box {
+            padding: 15px;
+        }
+
+        .visitor-counter {
+            font-size: 28px;
+        }
+    }
+</style>
+
+
+</html>
+
+
+
+
+
+
